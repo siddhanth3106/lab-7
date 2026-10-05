@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MathCalc Pro &bull; Mathematical Operations Web Application</title>
+  <meta name="description" content="A modern, responsive mathematical calculator application performing addition, subtraction, multiplication, and division using HTML form elements and JavaScript.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧮</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient background glow elements -->
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+  <div class="ambient-glow glow-3"></div>
+
+  <div class="app-wrapper">
+    <!-- Header Section -->
+    <header class="app-header">
+      <div class="brand-badge">
+        <span class="pulse-dot"></span>
+        <span>Lab 07 &bull; Web Technology</span>
+      </div>
+      <h1 class="main-title">Mathematical Operations <span class="gradient-text">Engine</span></h1>
+      <p class="subtitle">Compute arithmetic operations with real-time validation, precision math, and calculation history.</p>
+    </header>
+
+    <!-- Main Content Grid -->
+    <main class="calculator-grid">
+      <!-- Left Card: Form Calculator -->
+      <section class="card glass-card calc-card" aria-labelledby="formHeading">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="icon-bubble">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="2" width="16" height="20" rx="2"></rect>
+                <line x1="8" y1="6" x2="16" y2="6"></line>
+                <line x1="16" y1="14" x2="16" y2="18"></line>
+                <path d="M16 10h.01"></path>
+                <path d="M12 10h.01"></path>
+                <path d="M8 10h.01"></path>
+                <path d="M12 14h.01"></path>
+                <path d="M8 14h.01"></path>
+                <path d="M12 18h.01"></path>
+                <path d="M8 18h.01"></path>
+              </svg>
+            </div>
+            <div>
+              <h2 id="formHeading" class="card-title">Arithmetic Form</h2>
+              <p class="card-description">Enter numbers and select a mathematical operation</p>
+            </div>
+          </div>
+          <button type="button" id="quickSwapBtn" class="pill-btn" title="Swap First and Second Numbers">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m7 15 5 5 5-5"></path>
+              <path d="m7 9 5-5 5 5"></path>
+            </svg>
+            <span>Swap Values</span>
+          </button>
+        </div>
+
+        <form id="calcForm" class="calc-form" novalidate>
+          <!-- First Operand Input -->
+          <div class="form-group">
+            <label for="firstNumber" class="form-label">
+              <span>First Operand (<span class="math-var">A</span>)</span>
+              <span class="required-indicator">*</span>
+            </label>
+            <div class="input-wrapper">
+              <span class="input-prefix">A =</span>
+              <input 
+                type="number" 
+                id="firstNumber" 
+                name="firstNumber" 
+                class="form-input" 
+                placeholder="e.g. 42 or 3.14" 
+                step="any"
+                required
+                autocomplete="off"
+              >
+              <button type="button" class="clear-input-btn" id="clearNum1" title="Clear input" aria-label="Clear first number">
+                &times;
+              </button>
+            </div>
+            <span class="input-hint" id="num1Error"></span>
+          </div>
+
+          <!-- Operation Selector -->
+          <div class="form-group">
+            <label class="form-label">
+              <span>Select Operation</span>
+              <span class="required-indicator">*</span>
+            </label>
+            <div class="operation-selector" role="radiogroup" aria-label="Mathematical Operations">
+              <!-- Addition -->
+              <label class="op-option" for="op-add">
+                <input type="radio" id="op-add" name="operation" value="add" checked>
+                <div class="op-card">
+                  <span class="op-symbol">+</span>
+                  <span class="op-name">Addition</span>
+                  <span class="op-formula">A + B</span>
+                </div>
+              </label>
+
+              <!-- Subtraction -->
+              <label class="op-option" for="op-sub">
+                <input type="radio" id="op-sub" name="operation" value="subtract">
+                <div class="op-card">
+                  <span class="op-symbol">&minus;</span>
+                  <span class="op-name">Subtraction</span>
+                  <span class="op-formula">A &minus; B</span>
+                </div>
+              </label>
+
+              <!-- Multiplication -->
+              <label class="op-option" for="op-mul">
+                <input type="radio" id="op-mul" name="operation" value="multiply">
+                <div class="op-card">
+                  <span class="op-symbol">&times;</span>
+                  <span class="op-name">Multiplication</span>
+                  <span class="op-formula">A &times; B</span>
+                </div>
+              </label>
+
+              <!-- Division -->
+              <label class="op-option" for="op-div">
+                <input type="radio" id="op-div" name="operation" value="divide">
+                <div class="op-card">
+                  <span class="op-symbol">&divide;</span>
+                  <span class="op-name">Division</span>
+                  <span class="op-formula">A &divide; B</span>
+                </div>
+              </label>
+
+              <!-- Modulo (Bonus) -->
+              <label class="op-option" for="op-mod">
+                <input type="radio" id="op-mod" name="operation" value="modulo">
+                <div class="op-card">
+                  <span class="op-symbol">%</span>
+                  <span class="op-name">Modulus</span>
+                  <span class="op-formula">A mod B</span>
+                </div>
+              </label>
+
+              <!-- Exponentiation (Bonus) -->
+              <label class="op-option" for="op-pow">
+                <input type="radio" id="op-pow" name="operation" value="power">
+                <div class="op-card">
+                  <span class="op-symbol">x<sup>y</sup></span>
+                  <span class="op-name">Power</span>
+                  <span class="op-formula">A<sup>B</sup></span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Second Operand Input -->
+          <div class="form-group">
+            <label for="secondNumber" class="form-label">
+              <span>Second Operand (<span class="math-var">B</span>)</span>
+              <span class="required-indicator">*</span>
+            </label>
+            <div class="input-wrapper">
+              <span class="input-prefix">B =</span>
+              <input 
+                type="number" 
+                id="secondNumber" 
+                name="secondNumber" 
+                class="form-input" 
+                placeholder="e.g. 7 or 0.5" 
+                step="any"
+                required
+                autocomplete="off"
+              >
+              <button type="button" class="clear-input-btn" id="clearNum2" title="Clear input" aria-label="Clear second number">
+                &times;
+              </button>
+            </div>
+            <span class="input-hint" id="num2Error"></span>
+          </div>
+
+          <!-- Buttons Group -->
+          <div class="form-actions">
+            <button type="submit" id="calculateBtn" class="btn btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14"></path>
+                <path d="m12 5 7 7-7 7"></path>
+              </svg>
+              <span>Calculate Result</span>
+            </button>
+            <button type="reset" id="resetBtn" class="btn btn-secondary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                <path d="M3 3v5h5"></path>
+              </svg>
+              <span>Reset</span>
+            </button>
+          </div>
+        </form>
+
+        <!-- Live Result Banner -->
+        <div id="resultContainer" class="result-container" aria-live="polite">
+          <div class="result-placeholder">
+            <div class="placeholder-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <p>Enter values above and click <strong>Calculate Result</strong> to see the computation.</p>
+          </div>
+
+          <div class="result-display hidden" id="resultDisplay">
+            <div class="result-top">
+              <span class="result-badge" id="operationBadge">Addition</span>
+              <div class="result-tools">
+                <button type="button" class="tool-btn" id="copyResultBtn" title="Copy result to clipboard">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                  <span>Copy</span>
+                </button>
+                <button type="button" class="tool-btn" id="useAsInputBtn" title="Use result as next First Operand (A)">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 14 4 9 9 4"></polyline>
+                    <path d="M20 20v-7a4 4 0 0 0-4-4H4"></path>
+                  </svg>
+                  <span>Use as A</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="equation-text" id="equationOutput">10 + 5 = 15</div>
+            
+            <div class="answer-box">
+              <span class="answer-label">Result:</span>
+              <span class="answer-value" id="resultValue">15</span>
+            </div>
+
+            <div class="result-details" id="resultDetails">
+              <div class="detail-item">
+                <span class="detail-label">Type:</span>
+                <span class="detail-value" id="detailType">Integer</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Parity / Sign:</span>
+                <span class="detail-value" id="detailParity">Positive Even</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">Formula:</span>
+                <span class="detail-value font-mono" id="detailFormula">A + B</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Error Alert Banner -->
+          <div class="error-banner hidden" id="errorBanner">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span id="errorMessage">Invalid mathematical operation.</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Quick Presets & History -->
+      <aside class="sidebar-column">
+        <!-- Quick Presets Card -->
+        <section class="card glass-card presets-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="icon-bubble icon-purple">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+              </div>
+              <div>
+                <h3 class="card-title">Quick Test Presets</h3>
+                <p class="card-description">Instant test cases for demonstration</p>
+              </div>
+            </div>
+          </div>
+          <div class="preset-grid">
+            <button type="button" class="preset-pill" data-a="125" data-b="8" data-op="multiply">
+              <span class="preset-calc">125 &times; 8</span>
+              <span class="preset-tag">Multiply</span>
+            </button>
+            <button type="button" class="preset-pill" data-a="100" data-b="4" data-op="divide">
+              <span class="preset-calc">100 &divide; 4</span>
+              <span class="preset-tag">Division</span>
+            </button>
+            <button type="button" class="preset-pill" data-a="450.75" data-b="249.25" data-op="add">
+              <span class="preset-calc">450.75 + 249.25</span>
+              <span class="preset-tag">Decimal Add</span>
+            </button>
+            <button type="button" class="preset-pill" data-a="1000" data-b="382" data-op="subtract">
+              <span class="preset-calc">1000 &minus; 382</span>
+              <span class="preset-tag">Subtract</span>
+            </button>
+            <button type="button" class="preset-pill" data-a="25" data-b="0" data-op="divide">
+              <span class="preset-calc">25 &divide; 0</span>
+              <span class="preset-tag danger">Zero Div Test</span>
+            </button>
+            <button type="button" class="preset-pill" data-a="2" data-b="10" data-op="power">
+              <span class="preset-calc">2<sup>10</sup></span>
+              <span class="preset-tag">Power</span>
+            </button>
+          </div>
+        </section>
+
+        <!-- Calculation History Card -->
+        <section class="card glass-card history-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <div class="icon-bubble icon-cyan">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+              </div>
+              <div>
+                <h3 class="card-title">Computation Log</h3>
+                <p class="card-description">Recent calculations performed in this session</p>
+              </div>
+            </div>
+            <button type="button" id="clearHistoryBtn" class="pill-btn danger" title="Clear all history">
+              Clear
+            </button>
+          </div>
+
+          <div class="history-list-wrapper">
+            <div id="historyEmpty" class="history-empty">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+              <p>No calculations recorded yet.</p>
+              <span>Calculated results will be archived here.</span>
+            </div>
+            <ul id="historyList" class="history-list" aria-label="Calculation history items"></ul>
+          </div>
+        </section>
+      </aside>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>Lab 07 Assignment &bull; Built with Semantic HTML5, Modular CSS, and Vanilla JavaScript</p>
+      <div class="footer-tags">
+        <span class="tag">HTML Forms</span>
+        <span class="tag">JavaScript Math</span>
+        <span class="tag">Form Validation</span>
+        <span class="tag">Glassmorphic UI</span>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Toast Notification System -->
+  <div id="toast" class="toast" role="alert" aria-live="assertive">
+    <span class="toast-msg">Copied to clipboard!</span>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
